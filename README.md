@@ -1,12 +1,12 @@
-# CeTe SaaS - Sistema Nervioso Central para MYPES
+# CeTe SaaS - Central Nervous System for MSEs
 
-CeTe es una plataforma B2B SaaS diseñada y desarrollada por el equipo **Nexxus**. Su propósito es democratizar la tecnología logística para las MYPES peruanas, unificando en un solo "Sistema Nervioso Central" la gestión de almacenes, el punto de venta (POS) y las rutas de despacho.
+CeTe is a B2B SaaS platform designed and developed by the **Nexxus** team. Its purpose is to democratize logistics technology for Peruvian MSEs (Micro and Small Enterprises), unifying warehouse management, point of sale (POS), and dispatch routes into a single "Central Nervous System".
 
-##  Arquitectura y Tecnologías
+## Architecture and Technologies
 
-El proyecto está construido bajo los principios de **Domain-Driven Design (DDD)** y **Arquitectura Hexagonal**, garantizando un código escalable, mantenible y altamente cohesivo.
+The project is built following the principles of **Domain-Driven Design (DDD)** and **Hexagonal Architecture**, ensuring scalable, maintainable, and highly cohesive code.
 
-**Tech Stack Frontend:**
+**Frontend Tech Stack:**
 * **Framework:** Vue.js 3 (Composition API)
 * **Build Tool:** Vite
 * **State Management:** Pinia
@@ -15,89 +15,89 @@ El proyecto está construido bajo los principios de **Domain-Driven Design (DDD)
 * **Routing:** Vue Router 4
 * **Mock Backend:** JSON-Server v0.17.4
 
-##  Estructura del FrontEnd
+## Frontend Structure
 
 ```text
 nexxus-ops-frontend-cete/
   .github/
-    workflows/                     # Flujos de trabajo de CI/CD (GitHub Actions)
-  server/                          # Servidor de pruebas local (Mock API con json-server)
-    db.json                        # Base de datos JSON simulada
-    routes.json                    # Mapeo de rutas de la Mock API
+    workflows/                     # CI/CD workflows (GitHub Actions)
+  server/                          # Local test server (Mock API with json-server)
+    db.json                        # Simulated JSON database
+    routes.json                    # Mock API route mapping
   src/
-    iam/                           # IAM bounded context (Identidad y Acceso)
-      domain/                      # Modelo de dominio (Entidades, Comandos)
-      application/                 # Orquestación de casos de uso (Pinia store)
+    iam/                           # IAM bounded context (Identity & Access)
+      domain/                      # Domain model (Entities, Commands)
+      application/                 # Use-case orchestration (Pinia store)
       infrastructure/              # API, Assemblers, Guards, Interceptors, Resources
-      presentation/                # Rutas, componentes y vistas de autenticación
+      presentation/                # Authentication routes, components, and views
 
-    inventory/                     # Inventory bounded context (Gestión de Inventario)
-      domain/                      # Entidad InventoryItem
-      application/                 # Estado y casos de uso de inventario (Pinia store)
-      infrastructure/              # API y Assembler de inventario
-      presentation/                # Rutas y vistas (Formulario, Lista)
+    inventory/                     # Inventory bounded context (Inventory Management)
+      domain/                      # InventoryItem entity
+      application/                 # Inventory state and use cases (Pinia store)
+      infrastructure/              # Inventory API and Assembler
+      presentation/                # Routes and views (Form, List)
 
-    logistics/                     # Logistics bounded context (Gestión de Despachos)
-      domain/                      # Entidad Dispatch
-      application/                 # Estado de logística (Pinia store)
-      infrastructure/              # API y Assembler de despachos
-      presentation/                # Rutas y vistas de despachos
+    logistics/                     # Logistics bounded context (Dispatch Management)
+      domain/                      # Dispatch entity
+      application/                 # Logistics state (Pinia store)
+      infrastructure/              # Dispatch API and Assembler
+      presentation/                # Dispatch routes and views
 
-    sales/                         # Sales bounded context (Ventas y Punto de Venta)
-      domain/                      # Entidades Sale y SaleItem
-      application/                 # Estado de ventas (Pinia store)
-      infrastructure/              # API y Assembler de ventas
-      presentation/                # Rutas y vistas (Punto de Venta, Lista de ventas)
+    sales/                         # Sales bounded context (Sales and Point of Sale)
+      domain/                      # Sale and SaleItem entities
+      application/                 # Sales state (Pinia store)
+      infrastructure/              # Sales API and Assembler
+      presentation/                # Routes and views (POS, Sales list)
 
-    shared/                        # Preocupaciones transversales (Cross-context)
-      infrastructure/              # Clases base HTTP (BaseApi, BaseEndpoint)
-      presentation/                # Layout global, Selector de idioma, Footer y Vistas base
+    shared/                        # Cross-cutting concerns (Cross-context)
+      infrastructure/              # HTTP base classes (BaseApi, BaseEndpoint)
+      presentation/                # Global layout, Language switcher, Footer, and Base views
 
-    locales/                       # Traducciones e internacionalización (es.json, en.json)
-    app.vue                        # Componente principal raíz
-    i18n.js                        # Configuración de Vue I18n
-    main.js                        # Punto de entrada e inicialización de la app
-    pinia.js                       # Instancia global de Pinia
-    router.js                      # Configuración principal de Vue Router
+    locales/                       # Translations and internationalization (es.json, en.json)
+    app.vue                        # Root main component
+    i18n.js                        # Vue I18n configuration
+    main.js                        # Entry point and app initialization
+    pinia.js                       # Global Pinia instance
+    router.js                      # Main Vue Router configuration
 ```
 
-## Bounded Contexts (Módulos)
+## Bounded Contexts (Modules)
 
-El sistema está dividido en 4 contextos delimitados principales:
-1. **IAM (Identity & Access Management):** Seguridad, autenticación, login y registro de empresas (Tenants).
-2. **Inventory (Core Domain):** Control de almacén, registro de ingresos, mermas y catálogo de productos (SKUs).
-3. **Sales:** Punto de Venta (POS) interactivo que descuenta stock en tiempo real y previene quiebres.
-4. **Logistics:** Generación de manifiestos de despacho y asignación de ventas a vehículos en ruta.
+The system is divided into 4 main bounded contexts:
+1. **IAM (Identity & Access Management):** Security, authentication, login, and company registration (Tenants).
+2. **Inventory (Core Domain):** Warehouse control, entry registration, shrinkage, and product catalog (SKUs).
+3. **Sales:** Interactive Point of Sale (POS) that deducts stock in real-time and prevents stockouts.
+4. **Logistics:** Generation of dispatch manifests and assignment of sales to vehicles en route.
 
-## Guía de Instalación y Ejecución
+## Installation and Setup Guide
 
-Sigue estos pasos para levantar el entorno de desarrollo local.
+Follow these steps to set up the local development environment.
 
-### 1. Requisitos Previos
-Asegúrate de tener instalado [Node.js](https://nodejs.org/) (Versión 18 o superior).
+### 1. Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed (Version 18 or higher).
 
-### 2. Instalación de Dependencias
-Abre una terminal en la raíz del proyecto y ejecuta:
+### 2. Install Dependencies
+Open a terminal in the root of the project and run:
 ```bash
 npm install
 ```
 
-### 3. Levantar la Base de Datos Simulada (Mock API)
-El proyecto utiliza `json-server` para simular una base de datos relacional y una API RESTful.
-Abre una **nueva pestaña** en tu terminal, ingresa a la carpeta `server` y ejecuta el servidor en el puerto 5222:
+### 3. Start the Simulated Database (Mock API)
+The project uses `json-server` to simulate a relational database and a RESTful API.
+Open a **new tab** in your terminal, navigate to the `server` folder, and run the server on port 5222:
 ```bash
 cd server
 npx json-server@0.17.4 --watch db.json --routes routes.json --port 5222
 ```
-*Nota: Es importante mantener esta terminal abierta para que el frontend pueda guardar y consultar datos.*
+*Note: It is important to keep this terminal open so the frontend can save and query data.*
 
-### 4. Ejecutar la Aplicación Web (Frontend)
-Regresa a tu terminal principal (en la raíz del proyecto) y ejecuta:
+### 4. Run the Web Application (Frontend)
+Return to your main terminal (in the project root) and run:
 ```bash
 npm run dev
 ```
 
-La aplicación estará disponible en tu navegador, generalmente en `http://localhost:5173`.
+The application will be available in your browser, typically at `http://localhost:5173`.
 
 ---
-*Desarrollado con responsabilidad, detalle y cariño por el equipo Nexxus - 2026.*
+*Developed with responsibility, attention to detail, and care by the Nexxus team - 2026.*
