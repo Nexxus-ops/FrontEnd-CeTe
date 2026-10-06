@@ -15,6 +15,52 @@ El proyecto está construido bajo los principios de **Domain-Driven Design (DDD)
 * **Routing:** Vue Router 4
 * **Mock Backend:** JSON-Server v0.17.4
 
+##  Estructura del FrontEnd
+
+```text
+nexxus-ops-frontend-cete/
+  .github/
+    workflows/                     # Flujos de trabajo de CI/CD (GitHub Actions)
+  server/                          # Servidor de pruebas local (Mock API con json-server)
+    db.json                        # Base de datos JSON simulada
+    routes.json                    # Mapeo de rutas de la Mock API
+  src/
+    iam/                           # IAM bounded context (Identidad y Acceso)
+      domain/                      # Modelo de dominio (Entidades, Comandos)
+      application/                 # Orquestación de casos de uso (Pinia store)
+      infrastructure/              # API, Assemblers, Guards, Interceptors, Resources
+      presentation/                # Rutas, componentes y vistas de autenticación
+
+    inventory/                     # Inventory bounded context (Gestión de Inventario)
+      domain/                      # Entidad InventoryItem
+      application/                 # Estado y casos de uso de inventario (Pinia store)
+      infrastructure/              # API y Assembler de inventario
+      presentation/                # Rutas y vistas (Formulario, Lista)
+
+    logistics/                     # Logistics bounded context (Gestión de Despachos)
+      domain/                      # Entidad Dispatch
+      application/                 # Estado de logística (Pinia store)
+      infrastructure/              # API y Assembler de despachos
+      presentation/                # Rutas y vistas de despachos
+
+    sales/                         # Sales bounded context (Ventas y Punto de Venta)
+      domain/                      # Entidades Sale y SaleItem
+      application/                 # Estado de ventas (Pinia store)
+      infrastructure/              # API y Assembler de ventas
+      presentation/                # Rutas y vistas (Punto de Venta, Lista de ventas)
+
+    shared/                        # Preocupaciones transversales (Cross-context)
+      infrastructure/              # Clases base HTTP (BaseApi, BaseEndpoint)
+      presentation/                # Layout global, Selector de idioma, Footer y Vistas base
+
+    locales/                       # Traducciones e internacionalización (es.json, en.json)
+    app.vue                        # Componente principal raíz
+    i18n.js                        # Configuración de Vue I18n
+    main.js                        # Punto de entrada e inicialización de la app
+    pinia.js                       # Instancia global de Pinia
+    router.js                      # Configuración principal de Vue Router
+```
+
 ## Bounded Contexts (Módulos)
 
 El sistema está dividido en 4 contextos delimitados principales:
