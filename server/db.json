@@ -1,0 +1,56 @@
+{
+  "inventory": [
+    {
+      "id": "1",
+      "sku": "SKU-1001",
+      "name": "Caja de Tomates (Ejemplo)",
+      "quantity": 48,
+      "unitPrice": 45.5
+    }
+  ],
+  "sales": [
+    {
+      "id": "1791261120883",
+      "customerName": "General",
+      "totalAmount": 45.5,
+      "status": "COMPLETED",
+      "createdAt": "2026-10-06T04:32:00.883Z",
+      "items": [
+        {
+          "inventoryItemId": "1",
+          "sku": "SKU-1001",
+          "name": "Caja de Tomates (Ejemplo)",
+          "quantity": 1,
+          "unitPrice": 45.5
+        }
+      ]
+    },
+    {
+      "id": "1791261542606",
+      "customerName": "General",
+      "totalAmount": 45.5,
+      "status": "CANCELLED",
+      "createdAt": "2026-10-06T04:39:02.606Z",
+      "items": [
+        {
+          "inventoryItemId": "1",
+          "sku": "SKU-1001",
+          "name": "Caja de Tomates (Ejemplo)",
+          "quantity": 1,
+          "unitPrice": 45.5
+        }
+      ]
+    }
+  ],
+  "dispatches": [
+    {
+      "id": "DSP-1791261612477",
+      "driverName": "Arquimedes",
+      "licensePlate": "BOY-182",
+      "status": "IN_TRANSIT",
+      "saleIds": "1791261120883",
+      "createdAt": "2026-10-06T04:40:12.477Z"
+    }
+  ],
+  "users": []
+}
