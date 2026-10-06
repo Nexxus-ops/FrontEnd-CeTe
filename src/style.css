@@ -1,0 +1,109 @@
+/* STREAMING_CHUNK:Definiendo variables base... */
+:root {
+  --primary-blue: #0A2540;
+  --accent-orange: #FF6A00;
+  --secondary-blue: #204066;
+  --light-bg: #F6F9FC;
+  --text-dark: #32325D;
+  --text-muted: #6B7C93;
+  --white: #FFFFFF;
+}
+
+/* STREAMING_CHUNK:Reseteando estilos del navegador... */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text-dark);
+  background-color: var(--light-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* STREAMING_CHUNK:Estilizando elementos basicos... */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+#app {
+  width: 100%;
+}
+
+/* STREAMING_CHUNK:Aplicando clases utilitarias de color... */
+.bg-primary {
+  background-color: var(--accent-orange) !important;
+  border-color: var(--accent-orange) !important;
+  color: var(--white) !important;
+}
+
+.app-header {
+  background-color: var(--accent-orange) !important;
+  border-color: var(--accent-orange) !important;
+}
+
+.bg-primary-reverse {
+  background-color: var(--light-bg) !important;
+  color: var(--accent-orange) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent-orange) !important;
+  border-color: var(--accent-orange) !important;
+  color: var(--white) !important;
+}
+
+.bg-accent:hover {
+  background-color: #e65c00 !important;
+  border-color: #e65c00 !important;
+}
+
+.text-accent {
+  color: var(--accent-orange) !important;
+}
+
+.text-primary {
+  color: var(--accent-orange) !important;
+}
+
+.p-button.p-button-warn,
+.p-button.p-button-warning {
+  background-color: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+  color: var(--white) !important;
+}
+
+.p-button.p-button-warn:hover,
+.p-button.p-button-warning:hover {
+  background-color: var(--secondary-blue) !important;
+  border-color: var(--secondary-blue) !important;
+}
