@@ -1,8 +1,7 @@
 import axios from "axios";
 import { iamInterceptor } from "../../iam/infrastructure/iam.interceptor.js";
 
-const platformApi = import.meta.env.VITE_CETE_API_URL;
-
+const platformApi = "https://cete-api-fake.onrender.com";
 /**
  * Shared infrastructure base class that configures the HTTP client.
  *
