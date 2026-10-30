@@ -156,10 +156,11 @@
     "supplier": "Supplier",
     "cost": "Unit cost (PEN)",
     "create": "Create purchase order",
-    "receive": "Receive remaining quantity",
+    "receive": "Receive goods",
     "ordered": "Ordered",
     "partial": "Partially received",
-    "received": "Received"
+    "received": "Received",
+    "receiveQuantity": "Quantity to receive"
   },
   "team": {
     "title": "Team access",

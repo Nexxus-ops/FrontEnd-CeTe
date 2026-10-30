@@ -156,10 +156,11 @@
     "supplier": "Proveedor",
     "cost": "Costo unitario (PEN)",
     "create": "Crear orden de compra",
-    "receive": "Recibir cantidad pendiente",
+    "receive": "Recibir mercadería",
     "ordered": "Ordenada",
     "partial": "Recepción parcial",
-    "received": "Recibida"
+    "received": "Recibida",
+    "receiveQuantity": "Cantidad a recibir"
   },
   "team": {
     "title": "Accesos del equipo",
