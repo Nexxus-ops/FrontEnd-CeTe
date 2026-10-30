@@ -1,7 +1,7 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-const landing = import.meta.env.VITE_LANDING_URL || 'https://nexxus-ops.github.io/nexxus-landing-page/';
+const landing = import.meta.env.VITE_LANDING_URL || 'https://cete-landing-av2.onrender.com/';
 </script>
 
 <template>

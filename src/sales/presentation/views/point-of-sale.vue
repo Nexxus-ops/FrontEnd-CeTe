@@ -111,7 +111,8 @@ const processCheckout = async () => {
 
       <div class="grid m-0 overflow-y-auto" style="max-height: calc(100vh - 200px);">
         <div v-for="product in availableProducts" :key="product.id" class="col-12 sm:col-6 lg:col-4 p-2">
-          <div class="surface-card shadow-1 p-3 border-round-xl cursor-pointer hover:shadow-3 transition-all transition-duration-200 border-1 surface-border"
+          <button type="button" class="surface-card shadow-1 p-3 border-round-xl cursor-pointer hover:shadow-3 transition-all transition-duration-200 border-1 surface-border w-full text-left"
+               :disabled="product.quantity <= 0 || isProcessing"
                @click="addToCart(product)"
                :class="{'opacity-50 pointer-events-none': product.quantity === 0}">
             <div class="flex justify-content-between align-items-start mb-3">
@@ -120,7 +121,7 @@ const processCheckout = async () => {
             </div>
             <div class="text-xl font-bold text-900 mb-1 line-height-3">{{ product.name }}</div>
             <div class="text-xl font-semibold text-primary">S/ {{ Number(product.unitPrice).toFixed(2) }}</div>
-          </div>
+          </button>
         </div>
       </div>
     </div>
