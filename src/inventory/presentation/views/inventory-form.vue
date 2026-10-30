@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import useInventoryStore from "../../application/inventory.store.js";
 import { computed, onMounted, ref } from "vue";
 import { InventoryItem } from "../../domain/inventory-item.entity.js";
+import { errorMessage } from "../../../shared/infrastructure/base-api.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -14,6 +15,7 @@ const { addItem, updateItem, getItemById, fetchItems } = store;
 const form = ref({ sku: "", name: "", quantity: 0, unitPrice: 0.0 });
 const isEdit = computed(() => !!route.params.id);
 const isLoading = ref(false);
+const formError = ref("");
 
 onMounted(async () => {
   if (!store.itemsLoaded) {
@@ -34,6 +36,7 @@ onMounted(async () => {
 });
 
 const saveItem = async () => {
+  formError.value = "";
   isLoading.value = true;
   try {
     const item = new InventoryItem({
@@ -52,7 +55,7 @@ const saveItem = async () => {
 
     navigateBack();
   } catch (error) {
-    console.error("Error", error);
+    formError.value = errorMessage(error);
   } finally {
     isLoading.value = false;
   }
@@ -70,6 +73,9 @@ const navigateBack = () => router.push({ name: "inventory-list" });
         </h2>
       </template>
       <template #content>
+        <p v-if="formError" role="alert" class="error-message">
+          {{ formError }}
+        </p>
         <form @submit.prevent="saveItem" class="flex flex-column gap-4 mt-3">
           <pv-float-label>
             <label for="sku">{{ t("inventory.sku") }}</label>
@@ -95,7 +101,7 @@ const navigateBack = () => router.push({ name: "inventory-list" });
             <pv-float-label class="flex-1">
               <label for="price">{{ t("inventory.price") }}</label>
               <pv-input-number
-                id="price"
+                input-id="price"
                 v-model="form.unitPrice"
                 mode="currency"
                 currency="PEN"

@@ -2,7 +2,8 @@
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
-import { onMounted, toRefs } from "vue";
+import { onMounted, toRefs, ref } from "vue";
+import { errorMessage } from "../../../shared/infrastructure/base-api.js";
 import useSalesStore from "../../application/sales.store.js";
 
 const { t } = useI18n();
@@ -11,6 +12,7 @@ const confirm = useConfirm();
 const store = useSalesStore();
 const { sales, salesLoaded, errors } = toRefs(store);
 const { fetchSales, cancelSale } = store;
+const actionError = ref("");
 
 onMounted(() => {
   if (!store.salesLoaded) fetchSales();
@@ -21,15 +23,19 @@ const navigateToPOS = () => {
 };
 
 const confirmCancel = (sale) => {
+  actionError.value = "";
   confirm.require({
     message: `${t("sales.cancel_sale")}: S/ ${sale.totalAmount}?`,
     header: t("common.warning"),
     icon: "pi pi-exclamation-triangle",
     acceptClass: "p-button-danger",
+    acceptLabel: t("sales.cancel_sale"),
+    rejectLabel: t("common.cancel"),
     accept: async () => {
       try {
         await cancelSale(sale.id);
-      } catch {
+      } catch (error) {
+        actionError.value = errorMessage(error);
         await fetchSales();
       }
     },
@@ -56,6 +62,9 @@ const formatDate = (isoString) => {
       />
     </div>
 
+    <p v-if="actionError" role="alert" class="error-message">
+      {{ actionError }}
+    </p>
     <pv-data-table
       :value="sales"
       :loading="!salesLoaded"
@@ -116,6 +125,7 @@ const formatDate = (isoString) => {
           <pv-button
             v-if="slotProps.data.status === 'COMPLETED'"
             icon="pi pi-times-circle"
+            :aria-label="t('sales.cancel_sale')"
             text
             rounded
             severity="danger"

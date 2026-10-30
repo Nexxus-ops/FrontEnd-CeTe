@@ -117,7 +117,8 @@
     "select_transactions": "Seleccione transacciones",
     "schedule_route": "Programar Ruta",
     "manifest_created": "Manifiesto Creado",
-    "manifest_success": "La ruta de despacho ha sido programada."
+    "manifest_success": "La ruta de despacho ha sido programada.",
+    "required_fields": "Ingresa un conductor, una placa y al menos una venta."
   },
   "home": {
     "welcome_title": "Tus operaciones, conectadas",

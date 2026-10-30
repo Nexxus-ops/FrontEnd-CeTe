@@ -3,7 +3,8 @@ import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
 import { useI18n } from "vue-i18n";
 import useInventoryStore from "../../application/inventory.store.js";
-import { onMounted, toRefs } from "vue";
+import { onMounted, toRefs, ref } from "vue";
+import { errorMessage } from "../../../shared/infrastructure/base-api.js";
 
 const router = useRouter();
 const confirm = useConfirm();
@@ -11,6 +12,7 @@ const { t } = useI18n();
 const store = useInventoryStore();
 const { items, itemsLoaded } = toRefs(store);
 const { fetchItems, deleteItem } = store;
+const actionError = ref("");
 
 onMounted(async () => {
   if (!itemsLoaded.value) {
@@ -23,12 +25,19 @@ const navigateToEdit = (id) =>
   router.push({ name: "inventory-edit", params: { id } });
 
 const confirmDelete = (item) => {
+  actionError.value = "";
   confirm.require({
     message: `${t("common.warning")}: ${item.name}?`,
     header: t("inventory.archive"),
     icon: "pi pi-exclamation-triangle",
+    acceptLabel: t("inventory.delete_waste"),
+    rejectLabel: t("common.cancel"),
     accept: async () => {
-      await deleteItem(item);
+      try {
+        await deleteItem(item);
+      } catch (error) {
+        actionError.value = errorMessage(error);
+      }
     },
   });
 };
@@ -48,6 +57,9 @@ const confirmDelete = (item) => {
       />
     </div>
 
+    <p v-if="actionError" role="alert" class="error-message">
+      {{ actionError }}
+    </p>
     <pv-data-table
       :value="items"
       :loading="!itemsLoaded"
@@ -105,6 +117,7 @@ const confirmDelete = (item) => {
           />
           <pv-button
             icon="pi pi-pencil"
+            :aria-label="t('inventory.edit_adjust')"
             text
             rounded
             class="mr-2 text-primary"
@@ -113,6 +126,7 @@ const confirmDelete = (item) => {
           />
           <pv-button
             icon="pi pi-trash"
+            :aria-label="t('inventory.archive')"
             text
             rounded
             severity="danger"

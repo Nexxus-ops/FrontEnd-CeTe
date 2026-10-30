@@ -117,7 +117,8 @@
     "select_transactions": "Select transactions",
     "schedule_route": "Schedule Route",
     "manifest_created": "Manifest Created",
-    "manifest_success": "Dispatch route has been scheduled."
+    "manifest_success": "Dispatch route has been scheduled.",
+    "required_fields": "Enter a driver, license plate and at least one sale."
   },
   "home": {
     "welcome_title": "Your operations, connected",

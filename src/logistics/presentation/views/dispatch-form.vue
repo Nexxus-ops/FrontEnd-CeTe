@@ -6,6 +6,7 @@ import { useI18n } from "vue-i18n";
 import useDispatchesStore from "../../application/dispatches.store.js";
 import useSalesStore from "../../../sales/application/sales.store.js";
 import { Dispatch } from "../../domain/dispatch.entity.js";
+import { errorMessage } from "../../../shared/infrastructure/base-api.js";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -43,7 +44,7 @@ const saveManifest = async () => {
     toast.add({
       severity: "warn",
       summary: t("common.warning"),
-      detail: "...",
+      detail: t("logistics.required_fields"),
       life: 3000,
     });
     return;
@@ -71,7 +72,7 @@ const saveManifest = async () => {
     toast.add({
       severity: "error",
       summary: t("common.error"),
-      detail: "Error",
+      detail: errorMessage(error),
       life: 3000,
     });
   } finally {
@@ -123,10 +124,15 @@ const navigateBack = () => {
           </pv-float-label>
 
           <div class="flex flex-column gap-2">
-            <label class="font-medium text-sm text-600">{{
-              t("logistics.sales_dispatch")
-            }}</label>
+            <label
+              id="dispatch-sales-label"
+              for="dispatch-sales"
+              class="font-medium text-sm text-600"
+              >{{ t("logistics.sales_dispatch") }}</label
+            >
             <pv-multi-select
+              input-id="dispatch-sales"
+              aria-labelledby="dispatch-sales-label"
               v-model="form.selectedSales"
               :options="availableSales"
               optionLabel="label"
