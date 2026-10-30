@@ -158,7 +158,7 @@ const processCheckout = async () => {
           </div>
 
           <div class="mt-auto border-top-1 surface-border pt-4">
-            <label class="form-stack">{{t('receipt.payment')}}<select v-model="paymentMethod" :disabled="isProcessing"><option value="CASH">{{t('receipt.cash')}}</option><option value="CARD">{{t('receipt.card')}}</option><option value="TRANSFER">{{t('receipt.transfer')}}</option></select></label>
+            <label for="point-of-sale-select-1">{{t('receipt.payment')}}</label><select id="point-of-sale-select-1" v-model="paymentMethod" :disabled="isProcessing"><option value="CASH">{{t('receipt.cash')}}</option><option value="CARD">{{t('receipt.card')}}</option><option value="TRANSFER">{{t('receipt.transfer')}}</option></select>
             <div class="flex justify-content-between align-items-center mb-4">
               <span class="text-xl font-bold text-600">{{ t('sales.total_charge') }}</span>
               <span class="text-3xl font-bold text-primary">S/ {{ cartTotal.toFixed(2) }}</span>
