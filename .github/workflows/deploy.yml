@@ -25,12 +25,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build
-        run: npm run build
+        env:
+          VITE_PLATFORM_API_URL: ${{ vars.VITE_PLATFORM_API_URL }}
+          VITE_LANDING_URL: ${{ vars.VITE_LANDING_URL }}
+        run: |
+          test -n "$VITE_PLATFORM_API_URL" || { echo "Configure repository variable VITE_PLATFORM_API_URL with the public HTTPS API URL"; exit 1; }
+          npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

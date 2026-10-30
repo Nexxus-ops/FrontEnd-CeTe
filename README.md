@@ -1,103 +1,35 @@
-# CeTe SaaS - Central Nervous System for MSEs
+# CeTe · Frontend AV2
 
-CeTe is a B2B SaaS platform designed and developed by the **Nexxus** team. Its purpose is to democratize logistics technology for Peruvian MSEs (Micro and Small Enterprises), unifying warehouse management, point of sale (POS), and dispatch routes into a single "Central Nervous System".
+Vue 3, Pinia, Vue Router, PrimeVue 4 (MIT), Material y Vue I18n. Consume la API C# propia; el flujo principal ya no usa JSON Server ni acepta un acceso ficticio.
 
-## Architecture and Technologies
-
-The project is built following the principles of **Domain-Driven Design (DDD)** and **Hexagonal Architecture**, ensuring scalable, maintainable, and highly cohesive code.
-
-**Frontend Tech Stack:**
-* **Framework:** Vue.js 3 (Composition API)
-* **Build Tool:** Vite
-* **State Management:** Pinia
-* **UI Library:** PrimeVue 4 + PrimeFlex
-* **HTTP Client:** Axios
-* **Routing:** Vue Router 4
-* **Mock Backend:** JSON-Server v0.17.4
-
-## Frontend Structure
-
-```text
-nexxus-ops-frontend-cete/
-  .github/
-    workflows/                     # CI/CD workflows (GitHub Actions)
-  server/                          # Local test server (Mock API with json-server)
-    db.json                        # Simulated JSON database
-    routes.json                    # Mock API route mapping
-  src/
-    iam/                           # IAM bounded context (Identity & Access)
-      domain/                      # Domain model (Entities, Commands)
-      application/                 # Use-case orchestration (Pinia store)
-      infrastructure/              # API, Assemblers, Guards, Interceptors, Resources
-      presentation/                # Authentication routes, components, and views
-
-    inventory/                     # Inventory bounded context (Inventory Management)
-      domain/                      # InventoryItem entity
-      application/                 # Inventory state and use cases (Pinia store)
-      infrastructure/              # Inventory API and Assembler
-      presentation/                # Routes and views (Form, List)
-
-    logistics/                     # Logistics bounded context (Dispatch Management)
-      domain/                      # Dispatch entity
-      application/                 # Logistics state (Pinia store)
-      infrastructure/              # Dispatch API and Assembler
-      presentation/                # Dispatch routes and views
-
-    sales/                         # Sales bounded context (Sales and Point of Sale)
-      domain/                      # Sale and SaleItem entities
-      application/                 # Sales state (Pinia store)
-      infrastructure/              # Sales API and Assembler
-      presentation/                # Routes and views (POS, Sales list)
-
-    shared/                        # Cross-cutting concerns (Cross-context)
-      infrastructure/              # HTTP base classes (BaseApi, BaseEndpoint)
-      presentation/                # Global layout, Language switcher, Footer, and Base views
-
-    locales/                       # Translations and internationalization (es.json, en.json)
-    app.vue                        # Root main component
-    i18n.js                        # Vue I18n configuration
-    main.js                        # Entry point and app initialization
-    pinia.js                       # Global Pinia instance
-    router.js                      # Main Vue Router configuration
-```
-
-## Bounded Contexts (Modules)
-
-The system is divided into 4 main bounded contexts:
-1. **IAM (Identity & Access Management):** Security, authentication, login, and company registration (Tenants).
-2. **Inventory (Core Domain):** Warehouse control, entry registration, shrinkage, and product catalog (SKUs).
-3. **Sales:** Interactive Point of Sale (POS) that deducts stock in real-time and prevents stockouts.
-4. **Logistics:** Generation of dispatch manifests and assignment of sales to vehicles en route.
-
-## Installation and Setup Guide
-
-Follow these steps to set up the local development environment.
-
-### 1. Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed (Version 18 or higher).
-
-### 2. Install Dependencies
-Open a terminal in the root of the project and run:
-```bash
-npm install
-```
-
-### 3. Start the Simulated Database (Mock API)
-The project uses `json-server` to simulate a relational database and a RESTful API.
-Open a **new tab** in your terminal, navigate to the `server` folder, and run the server on port 5222:
-```bash
-cd server
-npx json-server@0.17.4 --watch db.json --routes routes.json --port 5222
-```
-*Note: It is important to keep this terminal open so the frontend can save and query data.*
-
-### 4. Run the Web Application (Frontend)
-Return to your main terminal (in the project root) and run:
-```bash
+```powershell
+npm ci
 npm run dev
 ```
 
-The application will be available in your browser, typically at `http://localhost:5173`.
+Abrir la URL que muestra Vite con la base `/FrontEnd-CeTe/`. El backend debe estar ejecutándose con Docker. La API predeterminada es `http://localhost:5080/api/v1`; se puede cambiar mediante `VITE_PLATFORM_API_URL` en `.env.local`. Ver `.env.example`. Ninguna variable VITE debe contener secretos.
 
----
-*Developed with responsibility, attention to detail, and care by the Nexxus team - 2026.*
+Registrar una empresa con datos ficticios para la demostración. El administrador gestiona inventario, entradas/salidas, compras y recepción, ventas y boletas, despachos, métricas y empleados con roles. La boleta se abre al confirmar una venta y desde el historial; Imprimir permite guardarla como PDF desde el navegador.
+
+Inglés por defecto (`en_US`) y español latinoamericano (`es_419`), con preferencia persistente. Sesión en `sessionStorage`, vencimiento y limpieza de datos al cambiar de usuario. El servidor verifica permisos, precios, stock y aislamiento de empresa.
+
+```powershell
+npm run build
+npm audit
+```
+
+GitHub Pages toma `VITE_PLATFORM_API_URL` de una variable del repositorio. Configurar la URL HTTPS pública antes de publicar. Si falta en CI, el build debe fallar para evitar desplegar una aplicación que intente conectarse al localhost del visitante.
+
+Evidencias y alcance del incremento: [Report-CeTe](https://github.com/Nexxus-ops/Report-CeTe). El equipo debe aportar y revisar cambios reales de al menos tres participantes; la asistencia técnica no reemplaza su participación.
+
+## Prueba completa de navegador
+
+Con API Docker y Vite ejecutándose, usar npm run test:e2e. La suite usa Playwright 1.62.1 y Edge en Windows. En Linux, preparar Chromium mediante npx playwright install chromium. CETE_BROWSER_CHANNEL permite seleccionar otro canal instalado.
+
+También se puede verificar la demo pública desde PowerShell:
+
+    $env:CETE_WEB_URL = "https://cete-web-av2.onrender.com/"
+    $env:CETE_API_URL = "https://cete-api-av2.onrender.com/api/v1"
+    npm run test:e2e
+
+La suite crea una empresa ficticia y cuentas temporales en memoria. Comprueba catálogo, SKU duplicado, movimientos, empleados, compras parciales, venta por teclado, boleta e impresión, despacho, anulación, idiomas, móvil, permisos y revocación de sesión. Ejecutar en una base de demostración. Las capturas locales quedan en test-results y están excluidas de Git. Las credenciales y tokens no se guardan en archivos.
