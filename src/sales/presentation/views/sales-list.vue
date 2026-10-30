@@ -26,7 +26,7 @@ const confirmCancel = (sale) => {
     header: t('common.warning'),
     icon: 'pi pi-exclamation-triangle',
     acceptClass: 'p-button-danger',
-    accept: () => { cancelSale(sale.id); },
+    accept: async () => { try { await cancelSale(sale.id); } catch { await fetchSales(); } },
   });
 };
 
@@ -72,6 +72,7 @@ const formatDate = (isoString) => {
       </pv-column>
       <pv-column :header="t('common.actions')">
         <template #body="slotProps">
+          <pv-button icon="pi pi-receipt" text rounded :aria-label="t('receipt.view')" @click="router.push({name:'sales-receipt',params:{id:slotProps.data.id}})" />
           <pv-button v-if="slotProps.data.status === 'COMPLETED'"
                      icon="pi pi-times-circle" text rounded severity="danger"
                      @click="confirmCancel(slotProps.data)" v-tooltip="t('sales.cancel_sale')"/>

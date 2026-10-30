@@ -17,11 +17,11 @@ const form = ref({ driverName: '', licensePlate: '', selectedSales: [] });
 const isProcessing = ref(false);
 
 onMounted(() => {
-  if (!salesStore.salesLoaded) salesStore.fetchSales();
+  salesStore.fetchSales(); dispatchesStore.fetchDispatches();
 });
 
 const availableSales = computed(() => {
-  return salesStore.sales.filter(sale => sale.status === 'COMPLETED').map(sale => ({
+  return salesStore.sales.filter(sale => sale.status === 'COMPLETED' && !dispatchesStore.dispatches.some(d => d.saleIds?.includes(sale.id))).map(sale => ({
     id: sale.id,
     label: `#${sale.id} - ${sale.customerName} (S/ ${sale.totalAmount})`
   }));
@@ -82,7 +82,7 @@ const navigateBack = () => {
 
           <div class="flex flex-column gap-2">
             <label class="font-medium text-sm text-600">{{ t('logistics.sales_dispatch') }}</label>
-            <pv-select
+            <pv-multi-select
                 v-model="form.selectedSales"
                 :options="availableSales"
                 optionLabel="label"

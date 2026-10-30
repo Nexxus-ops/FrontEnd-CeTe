@@ -46,12 +46,12 @@ const goToSignUp = () => router.push({ name: 'iam-sign-up' });
         <form @submit.prevent="performSignIn" class="flex flex-column gap-4 mt-2">
           <pv-float-label>
             <label for="username">{{ t('auth.email_user') }}</label>
-            <pv-input-text id="username" v-model="form.username" class="w-full p-inputtext-lg" required />
+            <pv-input-text id="username" autocomplete="username" v-model="form.username" class="w-full p-inputtext-lg" required />
           </pv-float-label>
 
           <pv-float-label>
             <label for="password">{{ t('auth.password') }}</label>
-            <pv-input-text id="password" type="password" v-model="form.password" class="w-full p-inputtext-lg" required />
+            <pv-input-text id="password" autocomplete="current-password" type="password" v-model="form.password" class="w-full p-inputtext-lg" required />
           </pv-float-label>
 
           <pv-button type="submit" :label="t('layout.login')" size="large" class="w-full font-bold mt-2" :loading="isLoading" />

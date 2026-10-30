@@ -40,13 +40,13 @@ const getStatusLabel = (status) => {
   }
 };
 
-const markAsInTransit = (id) => {
-  updateDispatchStatus(id, 'IN_TRANSIT');
+const markAsInTransit = async (id) => {
+  try { await updateDispatchStatus(id, 'IN_TRANSIT'); } catch { return; }
   toast.add({ severity: 'info', summary: t('common.success'), detail: t('logistics.in_transit'), life: 3000 });
 };
 
-const markAsDelivered = (id) => {
-  updateDispatchStatus(id, 'DELIVERED');
+const markAsDelivered = async (id) => {
+  try { await updateDispatchStatus(id, 'DELIVERED'); } catch { return; }
   toast.add({ severity: 'success', summary: t('common.success'), detail: t('logistics.delivered'), life: 3000 });
 };
 

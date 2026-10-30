@@ -14,6 +14,7 @@ const useInventoryStore = defineStore('inventory', () => {
     const items = ref([]);
     const errors = ref([]);
     const itemsLoaded = ref(false);
+    window.addEventListener('cete:session-changed', () => { items.value = []; itemsLoaded.value = false; });
 
     // Getters
     const itemsCount = computed(() => itemsLoaded.value ? items.value.length : 0);

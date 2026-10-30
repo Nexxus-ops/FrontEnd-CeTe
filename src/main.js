@@ -27,6 +27,7 @@ import {
     InputText,
     Menu,
     Select,
+    MultiSelect,
     SelectButton,
     Tag,
     Toast,
@@ -45,7 +46,7 @@ const CeTePreset = definePreset(Material, {
             200: '#ffc085',
             300: '#ff9e4d',
             400: '#ff8126',
-            500: '#ff6a00',
+            500: '#a94300',
             600: '#e65c00',
             700: '#bf4c00',
             800: '#993d00',
@@ -80,8 +81,8 @@ app.use(i18n)
     .use(ConfirmationService)
     .use(DialogService)
     .use(ToastService)
-    .use(router)
-    .use(pinia);
+    .use(pinia)
+    .use(router);
 
 app.component('pv-button', Button)
     .component('pv-card', Card)
@@ -91,6 +92,7 @@ app.component('pv-button', Button)
     .component('pv-data-table', DataTable)
     .component('pv-dialog', Dialog)
     .component('pv-select', Select)
+    .component('pv-multi-select', MultiSelect)
     .component('pv-select-button', SelectButton)
     .component('pv-float-label', FloatLabel)
     .component('pv-icon-field', IconField)

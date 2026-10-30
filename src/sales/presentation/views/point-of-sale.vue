@@ -17,6 +17,8 @@ const searchQuery = ref('');
 const cart = ref([]);
 const customerName = ref('');
 const isProcessing = ref(false);
+const requestId = ref(null);
+const paymentMethod = ref('CASH');
 
 onMounted(() => {
   if (!inventoryStore.itemsLoaded) inventoryStore.fetchItems();
@@ -35,6 +37,8 @@ const cartTotal = computed(() => {
 });
 
 const addToCart = (product) => {
+  if (isProcessing.value) return;
+  requestId.value = null;
   if (product.quantity <= 0) {
     toast.add({ severity: 'error', summary: t('sales.stock_out_title'), detail: t('sales.stock_out_detail'), life: 3000 });
     return;
@@ -60,6 +64,8 @@ const addToCart = (product) => {
 };
 
 const removeFromCart = (index) => {
+  if (isProcessing.value) return;
+  requestId.value = null;
   cart.value.splice(index, 1);
 };
 
@@ -69,25 +75,20 @@ const processCheckout = async () => {
 
   try {
     const salePayload = new Sale({
-      id: Date.now().toString(),
+      id: requestId.value || (requestId.value = crypto.randomUUID()),
+      paymentMethod: paymentMethod.value,
       customerName: customerName.value || 'General',
       totalAmount: cartTotal.value,
       status: 'COMPLETED',
       items: cart.value
     });
 
-    await salesStore.registerSale(salePayload);
+    const completed = await salesStore.registerSale({...salePayload, paymentMethod: paymentMethod.value});
 
-    for (const cartItem of cart.value) {
-      const inventoryItem = inventoryStore.getItemById(cartItem.inventoryItemId);
-      if(inventoryItem) {
-        inventoryItem.quantity -= cartItem.quantity;
-        await inventoryStore.updateItem(inventoryItem);
-      }
-    }
-
+    await inventoryStore.fetchItems();
+    cart.value = [];
     toast.add({ severity: 'success', summary: t('sales.sale_success'), detail: t('sales.sale_success_detail'), life: 3000 });
-    router.push({ name: 'sales-list' });
+    router.push({ name: 'sales-receipt', params: {id: completed.id} });
   } catch (error) {
     toast.add({ severity: 'error', summary: t('common.error'), detail: 'Error', life: 3000 });
   } finally {
@@ -156,6 +157,7 @@ const processCheckout = async () => {
           </div>
 
           <div class="mt-auto border-top-1 surface-border pt-4">
+            <label class="form-stack">{{t('receipt.payment')}}<select v-model="paymentMethod" :disabled="isProcessing"><option value="CASH">{{t('receipt.cash')}}</option><option value="CARD">{{t('receipt.card')}}</option><option value="TRANSFER">{{t('receipt.transfer')}}</option></select></label>
             <div class="flex justify-content-between align-items-center mb-4">
               <span class="text-xl font-bold text-600">{{ t('sales.total_charge') }}</span>
               <span class="text-3xl font-bold text-primary">S/ {{ cartTotal.toFixed(2) }}</span>

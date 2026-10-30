@@ -4,7 +4,9 @@
     "inventory": "Almacén e Inventario",
     "sales": "Punto de Venta",
     "dispatches": "Rutas y Despacho",
-    "reports": "Acerca de CeTe"
+    "reports": "Acerca de CeTe",
+    "purchases": "Compras",
+    "team": "Equipo"
   },
   "common": {
     "save": "Guardar",
@@ -16,7 +18,11 @@
     "error": "Error",
     "warning": "Atención",
     "search": "Buscar...",
-    "state": "Estado"
+    "state": "Estado",
+    "language": "Idioma",
+    "loading": "Cargando…",
+    "empty": "Aún no hay registros.",
+    "select": "Selecciona una opción"
   },
   "layout": {
     "workspace": "CeTe Workspace",
@@ -46,19 +52,29 @@
     "invalid_credentials": "Credenciales inválidas",
     "password_mismatch": "Las contraseñas no coinciden",
     "account_created": "Cuenta Creada",
-    "please_login": "Por favor, inicie sesión"
+    "please_login": "Por favor, inicie sesión",
+    "company_name": "Nombre de la empresa",
+    "ruc": "RUC",
+    "address": "Dirección del negocio",
+    "password_help": "Usa entre 10 y 128 caracteres."
   },
   "inventory": {
     "title": "Control de Inventario",
-    "add_entry": "Registrar Ingreso",
+    "add_entry": "Crear producto",
     "sku": "Código SKU",
     "product_name": "Nombre del Producto",
     "stock": "Stock Actual",
     "price": "Precio Unitario",
-    "edit_adjust": "Editar o Ajustar",
-    "delete_waste": "Eliminar o Merma",
-    "adjust_stock": "Ajuste de Stock",
-    "quantity": "Cantidad"
+    "edit_adjust": "Editar producto",
+    "delete_waste": "Archivar producto",
+    "adjust_stock": "Editar producto",
+    "quantity": "Cantidad",
+    "movements": "Movimientos de inventario",
+    "direction": "Tipo de movimiento",
+    "entry": "Ingreso de mercadería",
+    "exit": "Salida / merma",
+    "reason": "Motivo",
+    "archive": "Archivar producto sin existencias"
   },
   "sales": {
     "history": "Historial de Ventas",
@@ -102,5 +118,57 @@
     "schedule_route": "Programar Ruta",
     "manifest_created": "Manifiesto Creado",
     "manifest_success": "La ruta de despacho ha sido programada."
+  },
+  "home": {
+    "welcome_title": "Tus operaciones, conectadas",
+    "welcome_description": "Gestiona inventario, compras, ventas y entregas desde un solo espacio."
+  },
+  "receipt": {
+    "title": "Boleta de venta",
+    "demo": "Boleta de demostración académica · CeTe",
+    "number": "Número de boleta",
+    "order": "Orden",
+    "issued": "Fecha y hora",
+    "cashier": "Cajero",
+    "items": "Productos comprados",
+    "payment": "Método de pago",
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "transfer": "Transferencia",
+    "thanks": "Gracias por tu compra.",
+    "print": "Imprimir boleta",
+    "view": "Ver boleta",
+    "back": "Volver"
+  },
+  "dashboard": {
+    "revenue": "Ingresos de hoy",
+    "sales": "Ventas de hoy",
+    "products": "Productos activos",
+    "dispatches": "Despachos pendientes",
+    "low_stock": "Productos por reponer",
+    "healthy": "El inventario supera sus niveles mínimos.",
+    "trends": "Tendencia de ventas",
+    "exchange": "Tipo de cambio referencial"
+  },
+  "purchases": {
+    "title": "Compras y recepciones",
+    "description": "Registra una orden y confirma la recepción física para actualizar el inventario.",
+    "supplier": "Proveedor",
+    "cost": "Costo unitario (PEN)",
+    "create": "Crear orden de compra",
+    "receive": "Recibir cantidad pendiente",
+    "ordered": "Ordenada",
+    "partial": "Recepción parcial",
+    "received": "Recibida"
+  },
+  "team": {
+    "title": "Accesos del equipo",
+    "role": "Rol operativo",
+    "create": "Crear trabajador"
+  },
+  "legal": {
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "guide": "Guía de uso"
   }
 }

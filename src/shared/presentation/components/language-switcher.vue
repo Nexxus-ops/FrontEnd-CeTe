@@ -1,19 +1,7 @@
 <script setup>
-import { useI18n } from "vue-i18n";
-const { locale, availableLocales } = useI18n();
+import { watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { locale, t } = useI18n();
+watch(locale, value => { localStorage.setItem('cete.locale', value); document.documentElement.lang = value === 'es_419' ? 'es-419' : 'en-US'; });
 </script>
-
-<template>
-  <pv-select-button v-model="locale" :options="availableLocales" aria-labelledby="basic" class="custom-switcher">
-    <template #option="slotProps">
-      <span class="text-sm font-bold">{{ slotProps.option.toUpperCase() }}</span>
-    </template>
-  </pv-select-button>
-</template>
-
-<style scoped>
-/* Pequeños ajustes para que encaje bien en la barra superior */
-.custom-switcher :deep(.p-togglebutton) {
-  padding: 0.5rem 0.75rem;
-}
-</style>
+<template><select v-model="locale" :aria-label="t('common.language')" class="language-select"><option value="en_US">English</option><option value="es_419">Español</option></select></template>

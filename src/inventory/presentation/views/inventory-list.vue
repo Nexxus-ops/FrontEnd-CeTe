@@ -24,7 +24,7 @@ const navigateToEdit = (id) => router.push({ name: 'inventory-edit', params: { i
 const confirmDelete = (item) => {
   confirm.require({
     message: `${t('common.warning')}: ${item.name}?`,
-    header: t('inventory.delete_waste'),
+    header: t('inventory.archive'),
     icon: 'pi pi-exclamation-triangle',
     accept: async () => {
       await deleteItem(item);
@@ -55,7 +55,7 @@ const confirmDelete = (item) => {
       <pv-column field="name" :header="t('inventory.product_name')" sortable></pv-column>
       <pv-column field="quantity" :header="t('inventory.stock')" sortable>
         <template #body="slotProps">
-          <pv-tag :severity="slotProps.data.quantity > 10 ? 'success' : 'danger'" :value="slotProps.data.quantity" class="text-sm px-3"/>
+          <pv-tag :severity="slotProps.data.quantity > (slotProps.data.minimumStock ?? 10) ? 'success' : 'danger'" :value="slotProps.data.quantity" class="text-sm px-3"/>
         </template>
       </pv-column>
       <pv-column field="unitPrice" :header="t('inventory.price')" sortable>
@@ -65,8 +65,9 @@ const confirmDelete = (item) => {
       </pv-column>
       <pv-column :header="t('common.actions')">
         <template #body="slotProps">
+          <pv-button icon="pi pi-history" text rounded :aria-label="t('inventory.movements')" @click="router.push({name:'inventory-movements',params:{id:slotProps.data.id}})" />
           <pv-button icon="pi pi-pencil" text rounded class="mr-2 text-primary" @click="navigateToEdit(slotProps.data.id)" v-tooltip="t('inventory.edit_adjust')"/>
-          <pv-button icon="pi pi-trash" text rounded severity="danger" @click="confirmDelete(slotProps.data)" v-tooltip="t('inventory.delete_waste')"/>
+          <pv-button icon="pi pi-trash" text rounded severity="danger" @click="confirmDelete(slotProps.data)" v-tooltip="t('inventory.archive')"/>
         </template>
       </pv-column>
     </pv-data-table>

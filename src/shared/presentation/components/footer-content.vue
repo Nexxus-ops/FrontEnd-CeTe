@@ -1,6 +1,7 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+const landing = import.meta.env.VITE_LANDING_URL || 'https://nexxus-ops.github.io/nexxus-landing-page/';
 </script>
 
 <template>
@@ -13,5 +14,5 @@ const { t } = useI18n();
         {{ t('layout.subtitle') }}
       </p>
     </div>
-  </footer>
+  <nav class="footer-navigation" aria-label="Legal"><a :href="landing+'terms.html'" target="_blank" rel="noopener noreferrer">{{t('legal.terms')}}</a><a :href="landing+'privacy.html'" target="_blank" rel="noopener noreferrer">{{t('legal.privacy')}}</a><a :href="landing+'guide.html'" target="_blank" rel="noopener noreferrer">{{t('legal.guide')}}</a></nav></footer>
 </template>

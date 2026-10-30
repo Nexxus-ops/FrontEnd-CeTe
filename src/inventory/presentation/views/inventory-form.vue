@@ -40,7 +40,7 @@ const saveItem = async () => {
       id: isEdit.value ? route.params.id : Date.now().toString(),
       sku: form.value.sku,
       name: form.value.name,
-      quantity: form.value.quantity,
+      quantity: 0,
       unitPrice: form.value.unitPrice
     });
 
@@ -83,11 +83,6 @@ const navigateBack = () => router.push({ name: 'inventory-list' });
           </pv-float-label>
 
           <div class="flex gap-3">
-            <pv-float-label class="flex-1">
-              <label for="quantity">{{ t('inventory.quantity') }}</label>
-              <pv-input-number id="quantity" v-model="form.quantity" required class="w-full p-inputtext-lg" :min="0" showButtons />
-            </pv-float-label>
-
             <pv-float-label class="flex-1">
               <label for="price">{{ t('inventory.price') }}</label>
               <pv-input-number id="price" v-model="form.unitPrice" mode="currency" currency="PEN" locale="es-PE" required class="w-full p-inputtext-lg" :min="0" />

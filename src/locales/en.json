@@ -4,7 +4,9 @@
     "inventory": "Warehouse & Inventory",
     "sales": "Point of Sale",
     "dispatches": "Routes & Dispatch",
-    "reports": "About CeTe"
+    "reports": "About CeTe",
+    "purchases": "Purchases",
+    "team": "Team"
   },
   "common": {
     "save": "Save",
@@ -16,7 +18,11 @@
     "error": "Error",
     "warning": "Warning",
     "search": "Search...",
-    "state": "Status"
+    "state": "Status",
+    "language": "Language",
+    "loading": "Loading…",
+    "empty": "No records yet.",
+    "select": "Select an option"
   },
   "layout": {
     "workspace": "CeTe Workspace",
@@ -46,19 +52,29 @@
     "invalid_credentials": "Invalid credentials",
     "password_mismatch": "Passwords do not match",
     "account_created": "Account Created",
-    "please_login": "Please log in"
+    "please_login": "Please log in",
+    "company_name": "Company name",
+    "ruc": "RUC",
+    "address": "Business address",
+    "password_help": "Use between 10 and 128 characters."
   },
   "inventory": {
     "title": "Inventory Control",
-    "add_entry": "Register Inbound",
+    "add_entry": "Create product",
     "sku": "SKU Code",
     "product_name": "Product Name",
     "stock": "Current Stock",
     "price": "Unit Price",
-    "edit_adjust": "Edit or Adjust",
-    "delete_waste": "Delete or Waste",
-    "adjust_stock": "Stock Adjustment",
-    "quantity": "Quantity"
+    "edit_adjust": "Edit product",
+    "delete_waste": "Archive product",
+    "adjust_stock": "Edit product",
+    "quantity": "Quantity",
+    "movements": "Stock movements",
+    "direction": "Movement type",
+    "entry": "Stock entry",
+    "exit": "Stock exit / waste",
+    "reason": "Reason",
+    "archive": "Archive product with zero stock"
   },
   "sales": {
     "history": "Sales History",
@@ -102,5 +118,57 @@
     "schedule_route": "Schedule Route",
     "manifest_created": "Manifest Created",
     "manifest_success": "Dispatch route has been scheduled."
+  },
+  "home": {
+    "welcome_title": "Your operations, connected",
+    "welcome_description": "Manage stock, purchases, sales and deliveries from one workspace."
+  },
+  "receipt": {
+    "title": "Sales receipt",
+    "demo": "Academic demonstration receipt · CeTe",
+    "number": "Receipt number",
+    "order": "Order",
+    "issued": "Date and time",
+    "cashier": "Cashier",
+    "items": "Purchased items",
+    "payment": "Payment method",
+    "cash": "Cash",
+    "card": "Card",
+    "transfer": "Bank transfer",
+    "thanks": "Thank you for your purchase.",
+    "print": "Print receipt",
+    "view": "View receipt",
+    "back": "Back"
+  },
+  "dashboard": {
+    "revenue": "Revenue today",
+    "sales": "Sales today",
+    "products": "Active products",
+    "dispatches": "Pending dispatches",
+    "low_stock": "Stock to replenish",
+    "healthy": "Stock is above its minimum levels.",
+    "trends": "Sales trend",
+    "exchange": "Reference exchange rate"
+  },
+  "purchases": {
+    "title": "Purchases and receiving",
+    "description": "Register an order, then confirm physical receipt to update stock.",
+    "supplier": "Supplier",
+    "cost": "Unit cost (PEN)",
+    "create": "Create purchase order",
+    "receive": "Receive remaining quantity",
+    "ordered": "Ordered",
+    "partial": "Partially received",
+    "received": "Received"
+  },
+  "team": {
+    "title": "Team access",
+    "role": "Operational role",
+    "create": "Create employee"
+  },
+  "legal": {
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "guide": "User guide"
   }
 }

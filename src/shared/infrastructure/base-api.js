@@ -1,36 +1,17 @@
-import axios from "axios";
-import { iamInterceptor } from "../../iam/infrastructure/iam.interceptor.js";
-
-const platformApi = "https://cete-api-fake.onrender.com";
-/**
- * Shared infrastructure base class that configures the HTTP client.
- *
- * @class BaseApi
- */
-export class BaseApi {
-    #http;
-
-    /**
-     * Initializes the Axios HTTP client with the base URL from environment variables.
-     */
-    constructor() {
-        this.#http = axios.create({
-            baseURL: platformApi,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-        });
-
-        // Cada vez que un módulo hace una petición al API, pasará por esta validación
-        this.#http.interceptors.request.use(iamInterceptor);
-    }
-
-    /**
-     * Returns the configured Axios HTTP client.
-     * @returns {import('axios').AxiosInstance}
-     */
-    get http() {
-        return this.#http;
-    }
-}
+import axios from 'axios';
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_PLATFORM_API_URL || 'http://localhost:5080/api/v1',
+  timeout: 15000, headers: { 'Content-Type': 'application/json' }
+});
+api.interceptors.request.use(config => {
+  config.headers['Accept-Language'] = localStorage.getItem('cete.locale') === 'es_419' ? 'es-419' : 'en-US';
+  const token = sessionStorage.getItem('cete.token');
+  if (token) config.headers.Authorization = 'Bearer ' + token;
+  return config;
+});
+api.interceptors.response.use(response => response, error => {
+  if (error.response?.status === 401) window.dispatchEvent(new Event('cete:unauthorized'));
+  return Promise.reject(error);
+});
+export const errorMessage = error => error.response?.data?.message || error.response?.data?.detail || 'The request failed. Please try again.';
+export class BaseApi { get http() { return api; } }
