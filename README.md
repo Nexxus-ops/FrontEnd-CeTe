@@ -2,7 +2,7 @@
 
 CeTe is a B2B SaaS platform designed and developed by the **Nexxus** team. Its purpose is to democratize logistics technology for Peruvian MSEs (Micro and Small Enterprises), unifying warehouse management, point of sale (POS), purchasing, and dispatch routes into a single "Central Nervous System".
 
-The AV2 increment connects the application to the project's C# RESTful API and PostgreSQL. It adds partial purchase receiving, historical sales receipts, operational accounts, and improvements to internationalization and accessibility.
+The "AV2" increment connects the application to the project's C# RESTful API and PostgreSQL. It adds partial purchase receiving, historical sales receipts, operational accounts, and improvements to internationalization and accessibility.
 
 **Live application:** [CeTe Workspace](https://cete-web-av2.onrender.com/).
 
