@@ -1,10 +1,83 @@
 <script setup>
-import{ref,onMounted}from'vue';import{useRoute}from'vue-router';import{useI18n}from'vue-i18n';import{api,errorMessage}from'../../../shared/infrastructure/base-api.js';import useInventoryStore from '../../application/inventory.store.js';
-const route=useRoute(),{t}=useI18n(),store=useInventoryStore();const rows=ref([]),quantity=ref(1),reason=ref(''),direction=ref('entries'),error=ref(''),loading=ref(false);
-async function load(){rows.value=(await api.get('/inventory/'+route.params.id+'/history')).data;}
-async function submit(){loading.value=true;error.value='';try{await api.post('/inventory/'+route.params.id+'/'+direction.value,{quantity:quantity.value,reason:reason.value});reason.value='';await Promise.all([load(),store.fetchItems()]);}catch(e){error.value=errorMessage(e);}finally{loading.value=false;}}
-onMounted(()=>load().catch(e=>error.value=errorMessage(e)));
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { api, errorMessage } from "../../../shared/infrastructure/base-api.js";
+import useInventoryStore from "../../application/inventory.store.js";
+const route = useRoute(),
+  { t } = useI18n(),
+  store = useInventoryStore();
+const rows = ref([]),
+  quantity = ref(1),
+  reason = ref(""),
+  direction = ref("entries"),
+  error = ref(""),
+  loading = ref(false);
+async function load() {
+  rows.value = (
+    await api.get("/inventory/" + route.params.id + "/history")
+  ).data;
+}
+async function submit() {
+  loading.value = true;
+  error.value = "";
+  try {
+    await api.post("/inventory/" + route.params.id + "/" + direction.value, {
+      quantity: quantity.value,
+      reason: reason.value,
+    });
+    reason.value = "";
+    await Promise.all([load(), store.fetchItems()]);
+  } catch (e) {
+    error.value = errorMessage(e);
+  } finally {
+    loading.value = false;
+  }
+}
+onMounted(() => load().catch((e) => (error.value = errorMessage(e))));
 </script>
-<template><section class="surface-panel"><router-link :to="{name:'inventory-list'}">{{t('receipt.back')}}</router-link><h1>{{t('inventory.movements')}}</h1><p v-if="error" role="alert" class="error-message">{{error}}</p><form class="form-stack" @submit.prevent="submit">
-<label for="movements-select-1">{{t('inventory.direction')}}</label><select id="movements-select-1" v-model="direction"><option value="entries">{{t('inventory.entry')}}</option><option value="exits">{{t('inventory.exit')}}</option></select><label>{{t('inventory.quantity')}}<input v-model.number="quantity" type="number" min="0.01" step="0.01" required></label><label>{{t('inventory.reason')}}<input v-model="reason" required maxlength="200"></label><pv-button type="submit" :label="t('common.save')" :loading="loading"/></form>
-<div class="table-scroll"><table><thead><tr><th>{{t('sales.date')}}</th><th>{{t('inventory.quantity')}}</th><th>{{t('inventory.reason')}}</th></tr></thead><tbody><tr v-for="row in rows" :key="row.id"><td>{{new Date(row.createdAt).toLocaleString()}}</td><td>{{row.quantity}}</td><td>{{row.reason}}</td></tr></tbody></table></div></section></template>
+<template>
+  <section class="surface-panel">
+    <router-link :to="{ name: 'inventory-list' }">{{
+      t("receipt.back")
+    }}</router-link>
+    <h1>{{ t("inventory.movements") }}</h1>
+    <p v-if="error" role="alert" class="error-message">{{ error }}</p>
+    <form class="form-stack" @submit.prevent="submit">
+      <label for="movements-select-1">{{ t("inventory.direction") }}</label
+      ><select id="movements-select-1" v-model="direction">
+        <option value="entries">{{ t("inventory.entry") }}</option>
+        <option value="exits">{{ t("inventory.exit") }}</option></select
+      ><label
+        >{{ t("inventory.quantity")
+        }}<input
+          v-model.number="quantity"
+          type="number"
+          min="0.01"
+          step="0.01"
+          required /></label
+      ><label
+        >{{ t("inventory.reason")
+        }}<input v-model="reason" required maxlength="200" /></label
+      ><pv-button type="submit" :label="t('common.save')" :loading="loading" />
+    </form>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ t("sales.date") }}</th>
+            <th>{{ t("inventory.quantity") }}</th>
+            <th>{{ t("inventory.reason") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in rows" :key="row.id">
+            <td>{{ new Date(row.createdAt).toLocaleString() }}</td>
+            <td>{{ row.quantity }}</td>
+            <td>{{ row.reason }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</template>

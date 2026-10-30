@@ -1,8 +1,70 @@
 <script setup>
-import{ref,onMounted}from'vue';import{useI18n}from'vue-i18n';import{api,errorMessage}from'../../../shared/infrastructure/base-api.js';
-const{t}=useI18n();const users=ref([]),username=ref(''),password=ref(''),role=ref('Warehouse'),error=ref(''),busy=ref(false);
-async function load(){users.value=(await api.get('/users')).data;}
-async function submit(){busy.value=true;error.value='';try{await api.post('/users',{username:username.value,password:password.value,role:role.value});username.value='';password.value='';await load();}catch(e){error.value=errorMessage(e);}finally{busy.value=false;}}
-onMounted(()=>load().catch(e=>error.value=errorMessage(e)));
+import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import { api, errorMessage } from "../../../shared/infrastructure/base-api.js";
+const { t } = useI18n();
+const users = ref([]),
+  username = ref(""),
+  password = ref(""),
+  role = ref("Warehouse"),
+  error = ref(""),
+  busy = ref(false);
+async function load() {
+  users.value = (await api.get("/users")).data;
+}
+async function submit() {
+  busy.value = true;
+  error.value = "";
+  try {
+    await api.post("/users", {
+      username: username.value,
+      password: password.value,
+      role: role.value,
+    });
+    username.value = "";
+    password.value = "";
+    await load();
+  } catch (e) {
+    error.value = errorMessage(e);
+  } finally {
+    busy.value = false;
+  }
+}
+onMounted(() => load().catch((e) => (error.value = errorMessage(e))));
 </script>
-<template><section><h1>{{t('team.title')}}</h1><p v-if="error" role="alert" class="error-message">{{error}}</p><form class="surface-panel form-stack" @submit.prevent="submit"><label>{{t('auth.email_company')}}<input v-model="username" type="email" autocomplete="off" required></label><label>{{t('auth.password')}}<input v-model="password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label><label for="team-select-1">{{t('team.role')}}</label><select id="team-select-1" v-model="role"><option value="Warehouse">{{t('sidebar.inventory')}}</option><option value="Sales">{{t('sidebar.sales')}}</option><option value="Logistics">{{t('sidebar.dispatches')}}</option></select><pv-button type="submit" :label="t('team.create')" :loading="busy"/></form><ul class="surface-panel stock-list"><li v-for="u in users" :key="u.id"><span>{{u.username}}</span><strong>{{u.role}}</strong></li></ul></section></template>
+<template>
+  <section>
+    <h1>{{ t("team.title") }}</h1>
+    <p v-if="error" role="alert" class="error-message">{{ error }}</p>
+    <form class="surface-panel form-stack" @submit.prevent="submit">
+      <label
+        >{{ t("auth.email_company")
+        }}<input
+          v-model="username"
+          type="email"
+          autocomplete="off"
+          required /></label
+      ><label
+        >{{ t("auth.password")
+        }}<input
+          v-model="password"
+          type="password"
+          autocomplete="new-password"
+          minlength="10"
+          maxlength="128"
+          required /></label
+      ><label for="team-select-1">{{ t("team.role") }}</label
+      ><select id="team-select-1" v-model="role">
+        <option value="Warehouse">{{ t("sidebar.inventory") }}</option>
+        <option value="Sales">{{ t("sidebar.sales") }}</option>
+        <option value="Logistics">{{ t("sidebar.dispatches") }}</option></select
+      ><pv-button type="submit" :label="t('team.create')" :loading="busy" />
+    </form>
+    <ul class="surface-panel stock-list">
+      <li v-for="u in users" :key="u.id">
+        <span>{{ u.username }}</span
+        ><strong>{{ u.role }}</strong>
+      </li>
+    </ul>
+  </section>
+</template>
