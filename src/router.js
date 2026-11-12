@@ -4,6 +4,7 @@ import salesRoutes from "./sales/presentation/sales-routes.js";
 import dispatchesRoutes from "./logistics/presentation/dispatches-routes.js";
 import iamRoutes from "./iam/presentation/iam-routes.js";
 import { authenticationGuard } from "./iam/infrastructure/authentication.guard.js";
+const applicationTitle = document.title;
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
@@ -54,7 +55,7 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to) => {
-  document.title = "CeTe · Workspace";
+  document.title = applicationTitle;
   return authenticationGuard(to);
 });
 export default router;
