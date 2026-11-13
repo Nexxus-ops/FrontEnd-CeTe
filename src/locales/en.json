@@ -97,7 +97,9 @@
     "stock_out_title": "Stock Out",
     "stock_out_detail": "This product is out of stock.",
     "sale_success": "Sale Completed",
-    "sale_success_detail": "Transaction successfully registered."
+    "sale_success_detail": "Transaction successfully registered.",
+    "workspace_help": "Choose products, review the cart and confirm the sale.",
+    "remove_item": "Remove {name} from cart"
   },
   "logistics": {
     "monitoring": "Route Monitoring",

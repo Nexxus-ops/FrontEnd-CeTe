@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { api, errorMessage } from "../../../shared/infrastructure/base-api.js";
+import "../sales-workspace.css";
 const route = useRoute();
 const { t, locale } = useI18n();
 const receipt = ref(null);
@@ -33,9 +34,9 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <section>
+  <section class="sales-page receipt-page">
     <div class="no-print page-actions">
-      <router-link :to="{ name: 'sales-list' }">{{
+      <router-link class="sales-back-link" :to="{ name: 'sales-list' }">{{
         t("receipt.back")
       }}</router-link
       ><pv-button
@@ -88,28 +89,28 @@ onMounted(async () => {
         </div>
       </dl>
       <div class="table-scroll">
-        <table>
+        <table role="table">
           <caption class="sr-only">
             {{
               t("receipt.items")
             }}
           </caption>
-          <thead>
-            <tr>
-              <th>{{ t("inventory.product_name") }}</th>
-              <th>{{ t("inventory.quantity") }}</th>
-              <th>{{ t("inventory.price") }}</th>
-              <th>{{ t("sales.total") }}</th>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">{{ t("inventory.product_name") }}</th>
+              <th role="columnheader" scope="col">{{ t("inventory.quantity") }}</th>
+              <th role="columnheader" scope="col">{{ t("inventory.price") }}</th>
+              <th role="columnheader" scope="col">{{ t("sales.total") }}</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="item in receipt.items" :key="item.sku">
-              <td>
+          <tbody role="rowgroup">
+            <tr v-for="item in receipt.items" :key="item.sku" role="row">
+              <td role="cell">
                 {{ item.name }}<small>{{ item.sku }}</small>
               </td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ money(item.unitPrice) }}</td>
-              <td>{{ money(item.amount) }}</td>
+              <td role="cell" :data-label="t('inventory.quantity')">{{ item.quantity }}</td>
+              <td role="cell" :data-label="t('inventory.price')">{{ money(item.unitPrice) }}</td>
+              <td role="cell" :data-label="t('sales.total')">{{ money(item.amount) }}</td>
             </tr>
           </tbody>
         </table>

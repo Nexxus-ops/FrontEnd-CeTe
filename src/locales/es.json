@@ -97,7 +97,9 @@
     "stock_out_title": "Quiebre de Stock",
     "stock_out_detail": "Este producto está agotado.",
     "sale_success": "Venta Completada",
-    "sale_success_detail": "Transacción registrada con éxito."
+    "sale_success_detail": "Transacción registrada con éxito.",
+    "workspace_help": "Elige los productos, revisa el carrito y confirma la venta.",
+    "remove_item": "Quitar {name} del carrito"
   },
   "logistics": {
     "monitoring": "Monitoreo de Rutas",

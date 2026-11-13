@@ -1,0 +1,44 @@
+/* Sales presentation: catalogue, cart and historical receipts. */
+.sales-page { width: 100%; max-width: 80rem; min-width: 0; margin-inline: auto; }
+.sales-page-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+.sales-page-heading h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--primary-blue); }
+.sales-page-heading p { margin: .5rem 0 0; }
+.sales-back-link { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-weight: 600; color: var(--primary-blue); }
+.sales-back-link:hover { text-decoration: underline; }
+.sales-row-actions { display: flex; align-items: center; gap: .5rem; }
+.sales-row-actions .p-button { min-height: 44px; flex-shrink: 0; }
+.sales-reference { max-width: 15rem; overflow-wrap: anywhere; }
+.pos-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 25rem); gap: 1.5rem; align-items: start; }
+.pos-catalogue { display: grid; gap: 1rem; min-width: 0; }
+.pos-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem; }
+.pos-product { min-width: 0; }
+.pos-product > button { height: 100%; overflow-wrap: anywhere; }
+.pos-product > button:disabled { cursor: not-allowed; }
+.pos-product .p-tag { white-space: normal; text-align: center; }
+.pos-cart { position: sticky; top: 7rem; min-width: 0; }
+.pos-cart-items { max-height: 40vh; overflow-y: auto; }
+.pos-cart-row { display: flex; gap: .6rem; align-items: center; padding-block: 1rem; border-bottom: 1px solid #dde4eb; }
+.pos-cart-row .p-button { min-height: 44px; min-width: 44px; flex-shrink: 0; }
+.pos-cart-item { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.pos-line-total { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pos-payment-select { display: block; width: 100%; min-height: 44px; padding: .65rem; margin: .5rem 0 1rem; border: 1px solid #8b99a8; border-radius: .4rem; background: white; color: var(--primary-blue); }
+.pos-total { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem; margin-bottom: 1.5rem; }
+.receipt-page { max-width: 58rem; }
+.receipt-page .page-actions { flex-wrap: wrap; }
+.receipt-page .receipt { width: 100%; border-radius: .8rem; overflow-wrap: anywhere; }
+.receipt-page .receipt-meta { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.receipt-page .receipt-meta > div { min-width: 0; padding-block: .35rem; }
+.receipt-page .receipt-meta dt { color: #526475; font-size: .9rem; }
+.receipt-page .receipt-meta dd { color: #122b42; }
+.receipt-page .receipt th:not(:first-child), .receipt-page .receipt td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+.receipt-page .receipt-total { gap: 1rem; flex-wrap: wrap; }
+@media (max-width: 960px) { .pos-layout { grid-template-columns: minmax(0, 1fr); } .pos-cart { position: static; } }
+@media screen and (max-width: 600px) { .sales-page-heading { align-items: flex-start; } .sales-page-heading > .p-button { width: 100%; } .pos-products { grid-template-columns: minmax(0, 1fr); } .receipt-page .receipt { border-radius: .5rem; }
+  .receipt-page .receipt thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .receipt-page .receipt tbody { display: block; }
+  .receipt-page .receipt tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; padding-block: 1rem; border-bottom: 1px solid #dde4eb; }
+  .receipt-page .receipt tbody td { min-width: 0; padding: 0; border: 0; text-align: left; font-size: .875rem; }
+  .receipt-page .receipt tbody td:first-child { grid-column: 1 / -1; }
+  .receipt-page .receipt tbody td[data-label]::before { content: attr(data-label); display: block; min-height: 2.5em; margin-bottom: .35rem; font-size: .75rem; font-weight: 600; color: #526475; }
+ }
+@media print { .receipt-page { max-width: none; margin: 0; } .receipt-page .receipt { border: 0; border-radius: 0; } .receipt-page .receipt-meta dt { color: #122b42; } }

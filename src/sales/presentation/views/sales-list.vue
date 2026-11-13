@@ -5,6 +5,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { onMounted, toRefs, ref } from "vue";
 import { errorMessage } from "../../../shared/infrastructure/base-api.js";
 import useSalesStore from "../../application/sales.store.js";
+import "../sales-workspace.css";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -49,8 +50,8 @@ const formatDate = (isoString) => {
 </script>
 
 <template>
-  <div class="flex flex-column h-full">
-    <div class="flex align-items-center justify-content-between mb-4">
+  <section class="sales-page">
+    <header class="sales-page-heading">
       <h1 class="text-3xl font-bold text-color m-0">
         {{ t("sales.history") }}
       </h1>
@@ -60,7 +61,7 @@ const formatDate = (isoString) => {
         class="bg-primary border-round-lg shadow-1"
         @click="navigateToPOS"
       />
-    </div>
+    </header>
 
     <p v-if="actionError" role="alert" class="error-message">
       {{ actionError }}
@@ -75,7 +76,7 @@ const formatDate = (isoString) => {
     >
       <pv-column field="id" :header="t('sales.transaction_no')">
         <template #body="slotProps"
-          ><span class="text-500 text-sm">{{
+          ><span class="sales-reference text-500 text-sm">{{
             slotProps.data.id
           }}</span></template
         >
@@ -110,30 +111,34 @@ const formatDate = (isoString) => {
       </pv-column>
       <pv-column :header="t('common.actions')">
         <template #body="slotProps">
-          <pv-button
-            icon="pi pi-receipt"
-            text
-            rounded
-            :aria-label="t('receipt.view')"
-            @click="
-              router.push({
-                name: 'sales-receipt',
-                params: { id: slotProps.data.id },
-              })
-            "
-          />
-          <pv-button
-            v-if="slotProps.data.status === 'COMPLETED'"
-            icon="pi pi-times-circle"
-            :aria-label="t('sales.cancel_sale')"
-            text
-            rounded
-            severity="danger"
-            @click="confirmCancel(slotProps.data)"
-            v-tooltip="t('sales.cancel_sale')"
-          />
+          <div class="sales-row-actions">
+            <pv-button
+              :label="t('receipt.view')"
+              icon="pi pi-receipt"
+              text
+              rounded
+              :aria-label="t('receipt.view')"
+              @click="
+                router.push({
+                  name: 'sales-receipt',
+                  params: { id: slotProps.data.id },
+                })
+              "
+            />
+            <pv-button
+              v-if="slotProps.data.status === 'COMPLETED'"
+              icon="pi pi-times-circle"
+              :aria-label="t('sales.cancel_sale')"
+              text
+              rounded
+              severity="danger"
+              @click="confirmCancel(slotProps.data)"
+              v-tooltip="t('sales.cancel_sale')"
+            />
+          </div>
         </template>
       </pv-column>
+      <template #empty>{{ t("common.empty") }}</template>
     </pv-data-table>
-  </div>
+  </section>
 </template>
