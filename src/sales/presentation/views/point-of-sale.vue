@@ -6,6 +6,8 @@ import { useI18n } from "vue-i18n";
 import useInventoryStore from "../../../inventory/application/inventory.store.js";
 import useSalesStore from "../../application/sales.store.js";
 import { Sale } from "../../domain/sale.entity.js";
+import { errorMessage } from "../../../shared/infrastructure/base-api.js";
+import "../sales-workspace.css";
 
 const router = useRouter();
 const toast = useToast();
@@ -17,6 +19,7 @@ const searchQuery = ref("");
 const cart = ref([]);
 const customerName = ref("");
 const isProcessing = ref(false);
+const checkoutError = ref("");
 const requestId = ref(null);
 const paymentMethod = ref("CASH");
 
@@ -86,7 +89,8 @@ const removeFromCart = (index) => {
 };
 
 const processCheckout = async () => {
-  if (cart.value.length === 0) return;
+  if (cart.value.length === 0 || isProcessing.value) return;
+  checkoutError.value = "";
   isProcessing.value = true;
 
   try {
@@ -114,10 +118,11 @@ const processCheckout = async () => {
     });
     router.push({ name: "sales-receipt", params: { id: completed.id } });
   } catch (error) {
+    checkoutError.value = errorMessage(error);
     toast.add({
       severity: "error",
       summary: t("common.error"),
-      detail: "Error",
+      detail: checkoutError.value,
       life: 3000,
     });
   } finally {
@@ -127,156 +132,171 @@ const processCheckout = async () => {
 </script>
 
 <template>
-  <div class="grid h-full m-0 gap-3">
-    <div class="col-12 md:col-7 lg:col-8 flex flex-column gap-3 p-0">
-      <pv-card class="shadow-2 border-round-xl">
-        <template #content>
-          <pv-icon-field iconPosition="left" class="w-full">
-            <pv-input-icon class="pi pi-search" />
-            <pv-input-text
-              v-model="searchQuery"
-              :placeholder="t('sales.search')"
-              class="w-full p-inputtext-lg"
-            />
-          </pv-icon-field>
-        </template>
-      </pv-card>
-
-      <div
-        class="grid m-0 overflow-y-auto"
-        style="max-height: calc(100vh - 200px)"
-      >
-        <div
-          v-for="product in availableProducts"
-          :key="product.id"
-          class="col-12 sm:col-6 lg:col-4 p-2"
-        >
-          <button
-            type="button"
-            class="surface-card shadow-1 p-3 border-round-xl cursor-pointer hover:shadow-3 transition-all transition-duration-200 border-1 surface-border w-full text-left"
-            :disabled="product.quantity <= 0 || isProcessing"
-            @click="addToCart(product)"
-            :class="{
-              'opacity-50 pointer-events-none': product.quantity === 0,
-            }"
-          >
-            <div class="flex justify-content-between align-items-start mb-3">
-              <span class="text-sm text-500 font-medium">{{
-                product.sku
-              }}</span>
-              <pv-tag
-                :severity="product.quantity > 0 ? 'success' : 'danger'"
-                :value="
-                  product.quantity > 0
-                    ? `${t('inventory.stock')}: ${product.quantity}`
-                    : t('sales.out_of_stock')
-                "
+  <section class="sales-page">
+    <header class="sales-page-heading">
+      <div>
+        <h1>{{ t("sales.new_sale") }}</h1>
+        <p class="muted">{{ t("sales.workspace_help") }}</p>
+      </div>
+      <router-link class="sales-back-link" :to="{ name: 'sales-list' }">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>{{ t("sales.history") }}
+      </router-link>
+    </header>
+    <p v-if="checkoutError" role="alert" class="error-message">{{ checkoutError }}</p>
+    <div class="pos-layout">
+      <div class="pos-catalogue">
+        <pv-card class="shadow-2 border-round-xl">
+          <template #content>
+            <pv-icon-field iconPosition="left" class="w-full">
+              <pv-input-icon class="pi pi-search" />
+              <pv-input-text
+                v-model="searchQuery"
+                :aria-label="t('sales.search')"
+                :placeholder="t('sales.search')"
+                class="w-full p-inputtext-lg"
               />
-            </div>
-            <div class="text-xl font-bold text-900 mb-1 line-height-3">
-              {{ product.name }}
-            </div>
-            <div class="text-xl font-semibold text-primary">
-              S/ {{ Number(product.unitPrice).toFixed(2) }}
-            </div>
-          </button>
+            </pv-icon-field>
+          </template>
+        </pv-card>
+
+        <div class="pos-products">
+          <div
+            v-for="product in availableProducts"
+            :key="product.id"
+            class="pos-product"
+          >
+            <button
+              type="button"
+              class="surface-card shadow-1 p-3 border-round-xl cursor-pointer hover:shadow-3 transition-all transition-duration-200 border-1 surface-border w-full text-left"
+              :disabled="product.quantity <= 0 || isProcessing"
+              @click="addToCart(product)"
+              :class="{
+                'opacity-50 pointer-events-none': product.quantity === 0,
+              }"
+            >
+              <div class="flex justify-content-between align-items-start mb-3">
+                <span class="text-sm text-500 font-medium">{{
+                  product.sku
+                }}</span>
+                <pv-tag
+                  :severity="product.quantity > 0 ? 'success' : 'danger'"
+                  :value="
+                    product.quantity > 0
+                      ? `${t('inventory.stock')}: ${product.quantity}`
+                      : t('sales.out_of_stock')
+                  "
+                />
+              </div>
+              <div class="text-xl font-bold text-900 mb-1 line-height-3">
+                {{ product.name }}
+              </div>
+              <div class="text-xl font-semibold text-primary">
+                S/ {{ Number(product.unitPrice).toFixed(2) }}
+              </div>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-12 md:col flex-1 p-0">
-      <pv-card class="shadow-3 border-round-xl h-full flex flex-column">
-        <template #title>
-          <div
-            class="flex align-items-center justify-content-between border-bottom-1 surface-border pb-3"
-          >
-            <span class="text-xl font-bold">{{ t("sales.cart") }}</span>
-            <pv-tag
-              :value="`${cart.length} ${t('sales.items')}`"
-              severity="info"
-              rounded
-            />
-          </div>
-        </template>
-        <template #content>
-          <div class="flex flex-column gap-3 mb-4 mt-2">
-            <label class="font-medium text-sm text-600">{{
-              t("sales.customer_name")
-            }}</label>
-            <pv-input-text
-              v-model="customerName"
-              placeholder="..."
-              class="w-full"
-            />
-          </div>
-
-          <div
-            class="flex-grow-1 overflow-y-auto mb-4"
-            style="max-height: 40vh"
-          >
-            <div v-if="cart.length === 0" class="text-center text-500 py-5">
-              <i class="pi pi-shopping-cart text-4xl mb-3 text-300"></i>
-              <p class="m-0">{{ t("sales.empty_cart") }}</p>
+      <aside class="pos-cart" :aria-label="t('sales.cart')">
+        <pv-card class="shadow-3 border-round-xl h-full flex flex-column">
+          <template #title>
+            <div
+              class="flex align-items-center justify-content-between border-bottom-1 surface-border pb-3"
+            >
+              <span class="text-xl font-bold">{{ t("sales.cart") }}</span>
+              <pv-tag
+                :value="`${cart.length} ${t('sales.items')}`"
+                severity="info"
+                rounded
+              />
+            </div>
+          </template>
+          <template #content>
+            <div class="flex flex-column gap-3 mb-4 mt-2">
+              <label for="sale-customer" class="font-medium text-sm text-600">{{
+                t("sales.customer_name")
+              }}</label>
+              <pv-input-text
+                id="sale-customer"
+                v-model="customerName"
+                :disabled="isProcessing"
+                autocomplete="name"
+                placeholder="..."
+                class="w-full"
+              />
             </div>
 
             <div
-              v-for="(item, index) in cart"
-              :key="index"
-              class="flex align-items-center justify-content-between py-3 border-bottom-1 surface-border"
+              class="pos-cart-items mb-4"
             >
-              <div class="flex-1 pr-3">
-                <div class="font-bold text-900">{{ item.name }}</div>
-                <div class="text-sm text-500">
-                  {{ item.quantity }} x S/
-                  {{ Number(item.unitPrice).toFixed(2) }}
-                </div>
+              <div v-if="cart.length === 0" class="text-center text-500 py-5">
+                <i class="pi pi-shopping-cart text-4xl mb-3 text-300"></i>
+                <p class="m-0">{{ t("sales.empty_cart") }}</p>
               </div>
-              <div class="font-bold text-lg mr-3">
-                S/ {{ (item.quantity * item.unitPrice).toFixed(2) }}
+
+              <div
+                v-for="(item, index) in cart"
+                :key="item.inventoryItemId"
+                class="pos-cart-row"
+              >
+                <div class="pos-cart-item">
+                  <div class="font-bold text-900">{{ item.name }}</div>
+                  <div class="text-sm text-500">
+                    {{ item.quantity }} x S/
+                    {{ Number(item.unitPrice).toFixed(2) }}
+                  </div>
+                </div>
+                <div class="pos-line-total">
+                  S/ {{ (item.quantity * item.unitPrice).toFixed(2) }}
+                </div>
+                <pv-button
+                  icon="pi pi-times"
+                  text
+                  rounded
+                  severity="danger"
+                  :aria-label="t('sales.remove_item', { name: item.name })"
+                  :disabled="isProcessing"
+                  @click="removeFromCart(index)"
+                />
+              </div>
+            </div>
+
+            <div class="mt-auto border-top-1 surface-border pt-4">
+              <label for="point-of-sale-select-1">{{
+                t("receipt.payment")
+              }}</label
+              ><select
+                id="point-of-sale-select-1"
+                class="pos-payment-select"
+                v-model="paymentMethod"
+                :disabled="isProcessing"
+              >
+                <option value="CASH">{{ t("receipt.cash") }}</option>
+                <option value="CARD">{{ t("receipt.card") }}</option>
+                <option value="TRANSFER">{{ t("receipt.transfer") }}</option>
+              </select>
+              <div class="pos-total">
+                <span class="text-xl font-bold text-600">{{
+                  t("sales.total_charge")
+                }}</span>
+                <span class="text-3xl font-bold text-primary"
+                  >S/ {{ cartTotal.toFixed(2) }}</span
+                >
               </div>
               <pv-button
-                icon="pi pi-times"
-                text
-                rounded
-                severity="danger"
-                @click="removeFromCart(index)"
+                :label="t('sales.process_sale')"
+                icon="pi pi-check"
+                size="large"
+                class="w-full p-3 text-lg font-bold shadow-2"
+                :disabled="cart.length === 0 || isProcessing"
+                :loading="isProcessing"
+                @click="processCheckout"
               />
             </div>
-          </div>
-
-          <div class="mt-auto border-top-1 surface-border pt-4">
-            <label for="point-of-sale-select-1">{{
-              t("receipt.payment")
-            }}</label
-            ><select
-              id="point-of-sale-select-1"
-              v-model="paymentMethod"
-              :disabled="isProcessing"
-            >
-              <option value="CASH">{{ t("receipt.cash") }}</option>
-              <option value="CARD">{{ t("receipt.card") }}</option>
-              <option value="TRANSFER">{{ t("receipt.transfer") }}</option>
-            </select>
-            <div class="flex justify-content-between align-items-center mb-4">
-              <span class="text-xl font-bold text-600">{{
-                t("sales.total_charge")
-              }}</span>
-              <span class="text-3xl font-bold text-primary"
-                >S/ {{ cartTotal.toFixed(2) }}</span
-              >
-            </div>
-            <pv-button
-              :label="t('sales.process_sale')"
-              icon="pi pi-check"
-              size="large"
-              class="w-full p-3 text-lg font-bold shadow-2"
-              :disabled="cart.length === 0"
-              :loading="isProcessing"
-              @click="processCheckout"
-            />
-          </div>
-        </template>
-      </pv-card>
+          </template>
+        </pv-card>
+      </aside>
     </div>
-  </div>
+  </section>
 </template>
